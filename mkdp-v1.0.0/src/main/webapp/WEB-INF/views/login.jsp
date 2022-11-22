@@ -7,6 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-login.jsp
+<h1>This is a login.jsp Page</h1>
+<p>
+1. \${userid} 의 값은 : ${userid}<br>
+1. request.getAttribute("userid") 의 값은: <%=request.getAttribute("userid") %><br>
+2  request.getAttribute("passwd") 의 값은 : <%= request.getAttribute("passwd") %><br>
+3. request.getParameter("userid") 의 값은 : <%=request.getParameter("userid") %><br>
+</p>
 </body>
 </html>
