@@ -31,11 +31,22 @@
 </template>
 
 <script>
+import axios from 'axios';  13.9K (gzipped: 4.9K)
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  }
+  },
+  created() {
+	axios.get('http://localhost:8095/')
+	  .then(function(response) {
+		  console.log(response);
+	  })
+	  .catch(function(error) {
+		  console.log(error);
+	  });
+  },
 }
 </script>
 
