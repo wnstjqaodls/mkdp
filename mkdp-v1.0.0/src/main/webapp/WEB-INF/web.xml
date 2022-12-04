@@ -5,7 +5,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     version="3.1">
 
 
-
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -54,5 +53,4 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	</filter-mapping>
 	<!-- 한글 인코딩 End -->
 	
-
 </web-app>
