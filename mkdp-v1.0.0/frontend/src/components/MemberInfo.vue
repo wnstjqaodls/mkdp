@@ -1,11 +1,10 @@
 <template>
   <div>
-    {{ memberList }}
-    <!-- <el-table border :data="memberList">
+    <el-table border :data="memberList">
       <el-table-column prop="kiwoom_id" label="키움아이디"></el-table-column>
       <el-table-column prop="kiwoom_account" label="키움계좌번호"></el-table-column>
       <el-table-column prop="mem_name" label="이름"></el-table-column>
-    </el-table>       -->
+    </el-table>      
   </div>
 </template>
  

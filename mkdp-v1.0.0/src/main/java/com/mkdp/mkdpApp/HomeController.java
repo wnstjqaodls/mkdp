@@ -14,14 +14,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mkdp.service.MemberService;
+import com.mkdp.vo.ResultVO;
 
 /**
  * Handles requests for the application home page.
  */
+
+@CrossOrigin(origins = "*")
+@RequestMapping("mkdp-v1.0.0/")
 @Controller
 public class HomeController {
 	
@@ -30,6 +39,10 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	
+	@Autowired
+	MemberService service;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -106,6 +119,27 @@ public class HomeController {
 			System.out.println(key+"\t"+value);			
 		}
 		return "home";
-		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/memberInfo", method = RequestMethod.GET)
+	public ResultVO getMemberInfo() 
+	{	
+		// 호출 시 찍히게 될 로그
+		logger.info("[GET] getMemberInfo");
+		// 결과 값을 담을 ResultVO를 선언한 생성자를 통해서 만드는데 기본값은 success는 false, result는 null로 세팅
+		ResultVO result = new ResultVO(false, null);
+
+		try {
+			result.setResult(service.getMemberInfo());
+			result.setSuccess(true);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("[Member] getMemberInfo : " + e.getMessage(), e);
+		}
+
+		return result;
+
+	}	
+	
 }
