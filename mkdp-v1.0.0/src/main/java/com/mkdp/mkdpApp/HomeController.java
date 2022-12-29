@@ -28,9 +28,7 @@ import com.mkdp.vo.ResultVO;
 /**
  * Handles requests for the application home page.
  */
-
-@CrossOrigin(origins = "*")
-@RequestMapping("mkdp-v1.0.0/")
+@CrossOrigin("*")
 @Controller
 public class HomeController {
 	
@@ -122,7 +120,7 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/memberInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberInfo", method = RequestMethod.GET)
 	public ResultVO getMemberInfo() 
 	{	
 		// 호출 시 찍히게 될 로그
