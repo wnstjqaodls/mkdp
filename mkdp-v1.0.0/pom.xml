@@ -77,6 +77,13 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.26</version>
+        </dependency>			
+        	
+		<!-- mysql-driver GCP에선 필요없음. ms-sql 테스트를위해 종속성추가함-->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>8.4.1.jre11</version>
         </dependency>				
 				
 		<!-- AspectJ -->

@@ -12,7 +12,7 @@
 	 * ====================================================================
 	-->
 
-	<select id="selectUserInfo" parameterType="java.util.map" resultType="MkdpMap">
+	<select id="selectUserInfo" parameterType="map" resultType="map">
 		/* sql-id : FrmAppMsdMapper.selectUserInfo */
 		<![CDATA[
 		 	SELECT 

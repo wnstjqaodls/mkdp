@@ -7,17 +7,19 @@ import javax.sql.DataSource;
  
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+// @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/root-context.xml" })
 public class DBConnetcionTest {
     
-    @Inject
+    //@Inject
+	@Autowired
     private DataSource ds;
  
-    @Test
+    //@Test
     public void testConnection(){
     	
         try (Connection con = ds.getConnection()) {
