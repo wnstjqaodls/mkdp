@@ -2,16 +2,29 @@ package com.mkdp.mkdpApp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +34,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mkdp.service.MemberService;
 import com.mkdp.vo.ResultVO;
@@ -31,58 +45,58 @@ import com.mkdp.vo.ResultVO;
 @CrossOrigin("*")
 @Controller
 public class HomeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	// add test commit 
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	
+
 	@Autowired
 	MemberService service;
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
+
 		//프로퍼티 읽는로직
 		InputStream is = getClass().getResourceAsStream("/env/system.properties");
 		System.out.println(getClass().getResourceAsStream("/env/system.properties"));//getClass : com.mkdp.mkdpApp.HomeController
-		 
-		
+
+
 		Properties props = new Properties();
-		
+
 		try {
 			props.load(is);
 		} catch ( IOException e) {
 			e.printStackTrace();
 		}
 		System.out.println(props.get("system.password"));
-		
+
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+
 		String formattedDate = dateFormat.format(date);
-		
+
 		model.addAttribute("serverTime", formattedDate );
-		
+
 		return "home";
 	}
-	
-	
+
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)//get 
 	public String loginForm() {
 		System.out.println("TestController.loginForm get");
 		return "loginForm";//viewResolver
 		// /WEB-INF/views/   loginForm.jsp 
 	}
-		
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)//
 	public String login() {
 		System.out.println("TestController.login Post");
 		return "login";//login.jsp
 	}
-	
+
 	//쿠키 설정관련
 	@RequestMapping("/setCookie")
 	public String setCookie(HttpServletRequest request, HttpServletResponse response) {
@@ -98,7 +112,7 @@ public class HomeController {
 		System.out.println("set cookies==================");
 		return "home";
 	}
-	
+
 	@RequestMapping("/getCookie")
 	public String getCookie(HttpServletRequest request, HttpServletResponse response) {
 		Cookie[] cookies= request.getCookies();
@@ -107,7 +121,7 @@ public class HomeController {
 		}
 		return "home";
 	}
-	
+
 	@RequestMapping("/getHeader")
 	public String getHeader (HttpServletRequest request, HttpServletResponse response) {
 		Enumeration<String> keys= request.getHeaderNames();
@@ -118,9 +132,9 @@ public class HomeController {
 		}
 		return "home";
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value = "/MemberInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberInfo", method = RequestMethod.POST)
 	public ResultVO getMemberInfo() 
 	{	
 		// 호출 시 찍히게 될 로그
@@ -140,4 +154,49 @@ public class HomeController {
 
 	}	
 	
+	@RequestMapping(value = "/apiCall01", method = RequestMethod.GET)
+	public String apiCall01() 
+	{	
+		// 호출 시 찍히게 될 로
+		String result = null;
+		
+		return "apiDart";
+		
+	}	
+
+	/** API Dart 기업개황 */
+	@ResponseBody
+	@RequestMapping(value = "/companyOverview", method = RequestMethod.GET)
+	public Map<Object,Object> companyOverviewController(HttpServletRequest request) throws IOException, URISyntaxException {	
+
+		Map<Object, Object> result = new HashMap<>();
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+		String url = "https://opendart.fss.or.kr/api/company.json";
+		String crtfc_key = "7d0f1dcd2423d0a924566799752d81b114b9debe";
+		String corp_code = "00126380";
+
+		URIBuilder builder = new URIBuilder(url);
+		builder.setParameter("crtfc_key", crtfc_key);
+		builder.setParameter("corp_code", corp_code);
+
+		// 프록시 서버를 통해 요청을 보냄
+		HttpGet request1 = new HttpGet(builder.build());
+		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+		CloseableHttpResponse response = httpClient.execute(request1);
+		logger.info("[response] : "+response);
+
+		try {
+			HttpEntity entity = response.getEntity();
+			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+			result.put("result", responseBody);
+		} finally {
+			response.close();
+		}
+		
+		
+		return result;
+
+	}	
+
 }
