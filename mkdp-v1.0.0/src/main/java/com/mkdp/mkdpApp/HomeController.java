@@ -167,7 +167,7 @@ public class HomeController {
 	/** API Dart 기업개황 */
 	@ResponseBody
 	@RequestMapping(value = "/companyOverview", method = RequestMethod.GET)
-	public Map<Object,Object> companyOverviewController(HttpServletRequest request) throws IOException, URISyntaxException {	
+	public Map<Object,Object> companyOverviewController(HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException {	
 
 		Map<Object, Object> result = new HashMap<>();
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -183,15 +183,15 @@ public class HomeController {
 		// 프록시 서버를 통해 요청을 보냄
 		HttpGet request1 = new HttpGet(builder.build());
 		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-		CloseableHttpResponse response = httpClient.execute(request1);
-		logger.info("[response] : "+response);
+		CloseableHttpResponse apiResponse = httpClient.execute(request1);
+		logger.info("[response] : "+apiResponse);
 
 		try {
-			HttpEntity entity = response.getEntity();
+			HttpEntity entity = apiResponse.getEntity();
 			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
 			result.put("result", responseBody);
 		} finally {
-			response.close();
+			apiResponse.close();
 		}
 		
 		

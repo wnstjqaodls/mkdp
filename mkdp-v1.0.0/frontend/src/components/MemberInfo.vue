@@ -27,7 +27,7 @@ export default {
   methods: {
     getMemberInfo() {
       axios
-        .get('http://localhost:8080/mkdp-v1.0.0/MemberInfo')
+        .post('http://localhost:8050/mkdpApp/MemberInfo')
         .then((response) => {
           if (response.data.success) {
             console.log(response.data.result);

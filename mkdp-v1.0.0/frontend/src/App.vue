@@ -1,19 +1,18 @@
 <template>
-  <div id="app">
-    <Member-info></Member-info>
-
+  <div id="app"> 
+    <div>
+      <!-- 컴포넌트가 라우팅 되는 위치  -->
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import MemberInfo from './components/MemberInfo.vue'
-
 export default {
   name: 'App',
-  components: {
-    MemberInfo,
-  }
+    //왼쪽에는 아무렇게나 이름을 지어도 된다. 이 화면에서 사용할 이름을 짓는 부분
 }
+
 </script>
 
 <style>
