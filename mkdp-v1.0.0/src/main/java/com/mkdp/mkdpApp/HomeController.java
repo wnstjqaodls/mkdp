@@ -84,7 +84,7 @@ public class HomeController {
 	}
 
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)//get 
+	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)//get 
 	public String loginForm() {
 		System.out.println("TestController.loginForm get");
 		return "loginForm";//viewResolver

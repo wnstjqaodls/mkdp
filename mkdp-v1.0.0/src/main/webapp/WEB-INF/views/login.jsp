@@ -13,6 +13,7 @@
 1. request.getAttribute("userid") 의 값은: <%=request.getAttribute("userid") %><br>
 2  request.getAttribute("passwd") 의 값은 : <%= request.getAttribute("passwd") %><br>
 3. request.getParameter("userid") 의 값은 : <%=request.getParameter("userid") %><br>
+4. request.getParameter("passwd") 의 값은 : <%=request.getParameter("passwd") %><br>
 </p>
 </body>
 </html>
