@@ -1,11 +1,26 @@
 package com.mkdp.mkdpApp;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BusinessController {
@@ -30,11 +45,10 @@ public class BusinessController {
 		HttpGet request1 = new HttpGet(builder.build());
 		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
 		CloseableHttpResponse apiResponse = httpClient.execute(request1);
-		logger.info("[response] : "+apiResponse);
 
 		try {
-			HttpEntity entity = apiResponse.getEntity();
-			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+			HttpEntity entity = (HttpEntity) apiResponse.getEntity();
+			String responseBody = EntityUtils.toString((org.apache.http.HttpEntity) entity, StandardCharsets.UTF_8);
 			result.put("result", responseBody);
 		} finally {
 			apiResponse.close();
