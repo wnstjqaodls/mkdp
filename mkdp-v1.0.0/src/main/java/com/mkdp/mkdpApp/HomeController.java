@@ -152,6 +152,31 @@ public class HomeController {
 
 		return result;
 
+	}
+
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String main() {
+		System.out.println("this is main=================");
+		return "login";  //main.jsp
+	}
+	
+	
+	//1. redirect시 request.getParameter("userid")   //파라미터로 데이터 전송됨 setAttribute사용안됨
+	@RequestMapping(value = "/redirect", method = RequestMethod.GET)
+	public String redirect(Model m, HttpServletRequest request) {
+		System.out.println("redirect 호출 =============");
+		m.addAttribute("userid", "홍길동"); 
+		request.setAttribute("passwd", "1234");
+		return "redirect:main";   // /main으로 redirect, jsp요청이 아닌  main주소로 새로운 request를 날림
+		}
+	
+	//2. forward 시 request.getAttribute("userid")   //파라미터로 데이터 전송됨 getParameter사용안됨
+	@RequestMapping(value = "/forward", method = RequestMethod.GET)
+	public String forward(Model m, HttpServletRequest request) {
+		System.out.println("redirect 호출 =============");
+		m.addAttribute("userid", "홍길동"); 
+		request.setAttribute("passwd", "1234");
+		return "forward:main";   // /main으로 forward
 	}	
 	
 	@RequestMapping(value = "/apiCall01", method = RequestMethod.GET)
@@ -164,39 +189,6 @@ public class HomeController {
 		
 	}	
 
-	/** API Dart 기업개황 */
-	@ResponseBody
-	@RequestMapping(value = "/companyOverview", method = RequestMethod.GET)
-	public Map<Object,Object> companyOverviewController(HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException {	
 
-		Map<Object, Object> result = new HashMap<>();
-		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-
-		String url = "https://opendart.fss.or.kr/api/company.json";
-		String crtfc_key = "7d0f1dcd2423d0a924566799752d81b114b9debe";
-		String corp_code = "00126380";
-
-		URIBuilder builder = new URIBuilder(url);
-		builder.setParameter("crtfc_key", crtfc_key);
-		builder.setParameter("corp_code", corp_code);
-
-		// 프록시 서버를 통해 요청을 보냄
-		HttpGet request1 = new HttpGet(builder.build());
-		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-		CloseableHttpResponse apiResponse = httpClient.execute(request1);
-		logger.info("[response] : "+apiResponse);
-
-		try {
-			HttpEntity entity = apiResponse.getEntity();
-			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-			result.put("result", responseBody);
-		} finally {
-			apiResponse.close();
-		}
-		
-		
-		return result;
-
-	}	
 
 }
