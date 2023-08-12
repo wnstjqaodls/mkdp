@@ -1,4 +1,4 @@
-package com.mkdp.mkdpApp;
+package com.mkdp.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
