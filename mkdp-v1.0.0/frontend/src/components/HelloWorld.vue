@@ -47,7 +47,24 @@ export default {
 		  console.log(error);
 	  });
   },
-}
+
+  methods: {
+    getMemberInfo() {
+      axios
+        .get('http://localhost:8050/mkdpApp/')
+        .then((response) => {
+          if (response.data.success) {
+            console.log(response.data.result);
+            this.memberList = response.data.result;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+  },
+};
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
