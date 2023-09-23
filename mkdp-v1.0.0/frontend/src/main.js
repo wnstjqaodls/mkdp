@@ -16,27 +16,35 @@ Vue.config.productionTip = false
 
 // 라우터 객체 생성
 const router = new VueRouter({
-	mode: 'history',
-	routes: [
-		{
-			path: '/', component: () => import('./components/IndexHome.vue'),
-			children: [
-				{
-					path: 'contact',
-					component: () => import('./components/ContactPage.vue')
-				},
-				{
-					path: 'memberInfo',
-					component: () => import('./components/MemberInfo.vue')
-				},
-				{
-					path: 'companyOverview',
-					component: () => import('./components/companyOverview.vue')
-				}
-			]
-		},
-		{path: '/ContactPage', component: () => import('./components/ContactPage.vue')}
-	]
+  mode: "history",
+  routes: [
+    {
+      path: "/",
+      component: () => import("./components/IndexHome.vue"),
+      children: [
+        {
+          path: "contact",
+          component: () => import("./components/ContactPage.vue"),
+        },
+        {
+          path: "memberInfo",
+          component: () => import("./components/MemberInfo.vue"),
+        },
+        {
+          path: "companyOverview",
+          component: () => import("./components/companyOverview.vue"),
+        },
+      ],
+    },
+    {
+      path: "/ContactPage",
+      component: () => import("./components/ContactPage.vue"),
+    },
+    {
+      path: "/portfolio",
+      component: () => import("./components/portfolio.vue"),
+    },
+  ],
 });
 
 new Vue({
