@@ -16,20 +16,20 @@
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<!-- view부분에 대한 경로와 .jsp 설정하는  InternalResourceViewResolver-->
-	<!-- 
-		<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- view부분에 대한 경로와 .jsp 설정하는  InternalResourceViewResolver-->	
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
-		</beans:bean> 
-	-->
+	</beans:bean> 
+	
 	
 	<!--   Controller 등록-->
-	<!-- 
+	
 	<context:component-scan base-package="com.mkdp.mkdpApp" />
+	<context:component-scan base-package="com.mkdp.controller" />
 	<context:component-scan base-package="com.mkdp.service" />
 	<context:component-scan base-package="com.mkdp.mapper" />
 	<context:component-scan base-package="com.mkdp.vo" /> 
-	-->
+	
 	
 </beans:beans>
