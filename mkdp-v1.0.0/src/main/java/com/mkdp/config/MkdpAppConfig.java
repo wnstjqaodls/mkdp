@@ -5,15 +5,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@Configuration
-@ComponentScan(basePackages = {"com.mkdp.mkdpApp", "com.mkdp.service", "com.mkdp.mapper", "com.mkdp.vo"})
-public class MkdpAppConfig {
-    
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
-}
+//@Configuration
+//@ComponentScan(basePackages = {"com.mkdp.service", "com.mkdp.mapper", "com.mkdp.vo","com.mkdp.controller","com.mkdp.service.lgn"})
+//public class MkdpAppConfig {
+	/*
+	 * @Bean public InternalResourceViewResolver viewResolver() {
+	 * InternalResourceViewResolver viewResolver = new
+	 * InternalResourceViewResolver(); viewResolver.setPrefix("/WEB-INF/views/");
+	 * viewResolver.setSuffix(".jsp"); return viewResolver; }
+	 */
+//}

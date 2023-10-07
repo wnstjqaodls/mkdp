@@ -8,11 +8,9 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.mkdp.interceptor.MkdpSessionInterceptor;
-
-@Configuration
-@EnableWebMvc
-public class MkdpWebConfig implements WebMvcConfigurer {
+// @Configuration
+// @EnableWebMvc
+/*public class MkdpWebConfig implements WebMvcConfigurer {
     
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -33,4 +31,4 @@ public class MkdpWebConfig implements WebMvcConfigurer {
     }
     
     // 다른 설정 메서드들...
-}
+}*/
