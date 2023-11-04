@@ -27,10 +27,6 @@ const router = new VueRouter({
           component: () => import("./components/ContactPage.vue"),
         },
         {
-          path: "memberInfo",
-          component: () => import("./components/MemberInfo.vue"),
-        },
-        {
           path: "companyOverview",
           component: () => import("./components/companyOverview.vue"),
         },
