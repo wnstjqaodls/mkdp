@@ -18,7 +18,6 @@
 </style>
 
 <template>
-
 <div class="container">
 <div>
   <router-view name="IndexHome"></router-view>
