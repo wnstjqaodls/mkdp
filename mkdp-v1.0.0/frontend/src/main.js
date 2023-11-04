@@ -34,6 +34,10 @@ const router = new VueRouter({
           path: "companyOverview",
           component: () => import("./components/companyOverview.vue"),
         },
+        {
+          path: "footer",
+          component: () => import("./components/mainFooter.vue"),
+        },
       ],
     },
     {
@@ -44,6 +48,7 @@ const router = new VueRouter({
       path: "/portfolio",
       component: () => import("./components/portfolio.vue"),
     },
+
   ],
 });
 
