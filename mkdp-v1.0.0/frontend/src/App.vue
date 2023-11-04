@@ -3,7 +3,7 @@
     <div>
       <!-- 컴포넌트가 라우팅 되는 위치  -->
       <router-view></router-view>
-      <portfolio></portfolio>
+      <!-- <portfolio></portfolio> -->
     </div>
   </div>
 </template>
