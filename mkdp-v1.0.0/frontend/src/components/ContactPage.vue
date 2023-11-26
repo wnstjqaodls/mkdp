@@ -19,16 +19,16 @@
 
 <template>
 <main class="form-signin">
-  <form> 
+  <form @submit.prevent="sendLoginRequest"> <!-- submit 이벤트에 sendLoginRequest 메서드 바인딩 -->
     <img class="mb-4" src="../assets/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">MKDP</h1>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="email">
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="password">
       <label for="floatingPassword">Password</label>
     </div>
 
@@ -44,25 +44,35 @@
 </template>
 
 <script>
+import ajaxUtil from '../http/ajaxUtil';
+
+
 export default {
   data() {
     return {
-      name: '',
       email: '',
-      message: ''
+      password: ''
     }
   },
   methods: {
-    submitForm() {
-      // Here you can add code to submit the form data to a backend server.
-      console.log('Form submitted');
-      console.log('Name:', this.name);
-      console.log('Email:', this.email);
-      console.log('Message:', this.message);
-      // Clear form fields
-      this.name = '';
+    sendLoginRequest() {
+      const requestData = JSON.stringify({
+        email : this.email,
+        password : this.password
+      })
+
+      ajaxUtil.ajaxCall('login', requestData)
+          .then(response => {
+            console.log('Login successful:', response);
+            // 로그인 후 처리 로직
+          })
+          .catch(error => {
+            console.error('Login failed:', error);
+          });
+
+      // 폼 필드 초기화
       this.email = '';
-      this.message = '';
+      this.password = '';
     }
   }
 }
