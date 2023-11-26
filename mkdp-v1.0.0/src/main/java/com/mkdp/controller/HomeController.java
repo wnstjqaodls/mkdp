@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -18,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.mkdp.service.MemberService;
 import com.mkdp.vo.ResultVO;
+import com.mysql.cj.Session;
 
 /**
  * Handles requests for the application home page.
@@ -46,7 +49,7 @@ public class HomeController {
 
 		//프로퍼티 읽는로직
 		InputStream is = getClass().getResourceAsStream("/env/system.properties");
-		System.out.println(getClass().getResourceAsStream("/env/system.properties"));//getClass : com.mkdp.mkdpApp.HomeController
+		//System.out.println(getClass().getResourceAsStream("/env/system.properties"));//getClass : com.mkdp.mkdpApp.HomeController
 
 
 		Properties props = new Properties();
@@ -56,8 +59,8 @@ public class HomeController {
 		} catch ( IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(props.get("system.password"));
-
+		
+		logger.debug((String) props.get("system.password"));
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
@@ -71,14 +74,28 @@ public class HomeController {
 
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)//get 
 	public String loginForm() {
-		System.out.println("TestController.loginForm get");
 		return "loginForm";//viewResolver
 		// /WEB-INF/views/   loginForm.jsp 
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)//
-	public String login() {
-		System.out.println("TestController.login Post");
+	public String login(HttpServletRequest request, HttpServletResponse response, @RequestBody HashMap<String, Object> credentials) {
+		boolean isLoginValid = false;
+	    String email = (String) credentials.get("email");
+	    String password = (String) credentials.get("password");
+	   
+	    logger.debug("로그인 요청 프로토콜 : "+request.getProtocol());
+	    logger.debug("이메일 아이디는  	   : "+email);
+	    logger.debug("비밀번호는  			   : "+password);
+		
+		// TODO : 쿼리로직 추가되어야함 (email, password 를 가지고 DB에 조회하는쿼리
+		
+		if ( "TEST@123".equals(email) && "TEST".equals(password) ) {
+			isLoginValid = true;
+			request.setAttribute("result", "성공");
+		logger.info("로그인 성공  			   : ");
+		}
+		
 		return "login";//login.jsp
 	}
 
