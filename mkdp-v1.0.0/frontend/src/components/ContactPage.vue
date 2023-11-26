@@ -16,13 +16,14 @@
           font-size: 3.5rem;
         }
       }
+
 </style>
 
 <template>
 <main class="form-signin">
   <form @submit.prevent="sendLoginRequest"> <!-- submit 이벤트에 sendLoginRequest 메서드 바인딩 -->
-    <img class="mb-4" src="../assets/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">MKDP</h1>
+    <img class="ml-4" src="../assets/mkdp-logo-700.jpg" alt="" width="132" height="97">
+    <h1 class="h3 mb-3 fw-normal">Login to Market Data Provider</h1>
 
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="email">
