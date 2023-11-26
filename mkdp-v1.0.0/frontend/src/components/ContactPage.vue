@@ -2,6 +2,7 @@
 @import "../assets/css/bootstrap.min.css" ;
 @import "../assets/css/signin.css" ;
 
+
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
