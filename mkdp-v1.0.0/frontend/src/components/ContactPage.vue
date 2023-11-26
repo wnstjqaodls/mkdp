@@ -46,8 +46,7 @@
 </template>
 
 <script>
-import ajaxUtil from '../http/ajaxUtil';
-
+import { MKDP_HTTP } from '../http/axiosUtil';
 
 export default {
   data() {
@@ -57,13 +56,14 @@ export default {
     }
   },
   methods: {
+
     sendLoginRequest() {
-      const requestData = JSON.stringify({
+      const requestData = {
         email : this.email,
         password : this.password
-      })
+      }
 
-      ajaxUtil.ajaxCall('login', requestData)
+      MKDP_HTTP.MKDP_Request('login',requestData)
           .then(response => {
             console.log('Login successful:', response);
             // 로그인 후 처리 로직
@@ -76,6 +76,8 @@ export default {
       this.email = '';
       this.password = '';
     }
+
+
   }
 }
 </script>
