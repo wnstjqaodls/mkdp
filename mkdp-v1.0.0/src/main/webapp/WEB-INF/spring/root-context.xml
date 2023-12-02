@@ -25,9 +25,9 @@
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 	lazy-init="false">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://34.64.133.169:3306/" />
-		<property name="username" value="root" />
-		<property name="password" value="" />
+		<property name="url" value="jdbc:mysql://34.64.82.250:3306/" />
+		<property name="username" value="mkdp_admin" />
+		<property name="password" value="mkdp_123" />
 	</bean>
     
 	<!-- mybatis SqlSessionFactoryBean -->
