@@ -281,7 +281,7 @@ export default {
   methods: {
     getMemberInfo() {
       axios
-        .get('http://localhost:8080/mkdp-v1.0.0/insertPortfolio')
+        .get('http://localhost:8050/mkdp-v1.0.0/insertPortfolio')
         .then((response) => {
           if (response.data.success) {
             console.log(response.data.result);

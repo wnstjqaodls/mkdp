@@ -108,7 +108,7 @@ public class HomeController {
 	    MemberVO memberResult = memberList.get(0);
 	    String memName = (String) memberResult.getMem_name();
 	    // TODO : getKiwoom_password 이 아닌 user 의 password 멤버변수를 가져와야함. 없으면 필드생성후 게터세터 생성해야함
-	    String memPassword = (String) memberResult.getKiwoom_password();
+	    String memPassword = (String) memberResult.getMem_password();
 	    
 		if ( memName.equals(email) && memPassword.equals(password) ) {
 			isLoginValid = true;
