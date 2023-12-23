@@ -88,37 +88,6 @@ public class HomeController {
 		// /WEB-INF/views/   loginForm.jsp 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)//
-	public String login(HttpServletRequest request, HttpServletResponse response, @RequestBody HashMap<String, Object> credentials) {
-		boolean isLoginValid = false;
-	    String email = (String) credentials.get("email");
-	    String password = (String) credentials.get("password");
-	    List<MemberVO> memberList = new ArrayList<MemberVO>();
-	   
-	    logger.debug("로그인 요청 프로토콜 : "+request.getProtocol());
-	    logger.debug("이메일 아이디는  	   : "+email);
-	    logger.debug("비밀번호는  			   : "+password);
-		
-		// TODO : 쿼리로직 추가되어야함 (email, password 를 가지고 DB에 조회하는쿼리
-	    SqlSession session = ssf.openSession();
-	    MemberMapper mapper = session.getMapper(MemberMapper.class);
-	    
-	    memberList = mapper.getMemberInfo();
-
-	    MemberVO memberResult = memberList.get(0);
-	    String memName = (String) memberResult.getMem_name();
-	    // TODO : getKiwoom_password 이 아닌 user 의 password 멤버변수를 가져와야함. 없으면 필드생성후 게터세터 생성해야함
-	    String memPassword = (String) memberResult.getMem_password();
-	    
-		if ( memName.equals(email) && memPassword.equals(password) ) {
-			isLoginValid = true;
-			request.setAttribute("result", "성공");
-			logger.info("로그인 성공  			   : ");
-		}
-		
-		return "login";//login.jsp
-	}
-
 	//쿠키 설정관련
 	@RequestMapping("/setCookie")
 	public String setCookie(HttpServletRequest request, HttpServletResponse response) {
