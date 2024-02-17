@@ -2,8 +2,11 @@ package com.mkdp.session;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.stereotype.Component;
+
 import com.mkdp.util.CommonStringUtil;
 
+@Component
 public class UserSession {
 	
 	
@@ -37,12 +40,13 @@ public class UserSession {
     private String macAddr;
     private String authority; // 권한 정보
     private String membershipTier; // 유료 결제 티어
+    private String sessId; // 세션아이디
     public String currentBusinessDate; 
     public String previousBusinessDay; 
     public String nextBusinessDay;
 
 	public String getUserId() {
-		return userId;
+		return (String) userSessionMap.get("userId");
 	}
 
 	public void setUserId(String userId) {
@@ -50,7 +54,7 @@ public class UserSession {
 	}
 
 	public String getIpAddress() {
-		return ipAddress;
+		return (String) userSessionMap.get("ipAddress");
 	}
 
 	public void setIpAddress(String ipAddress) {
@@ -58,7 +62,7 @@ public class UserSession {
 	}
 
 	public String getMacAddr() {
-		return macAddr;
+		return (String) userSessionMap.get("macAddr");
 	}
 
 	public void setMacAddr(String macAddr) {
@@ -66,7 +70,7 @@ public class UserSession {
 	}
 
 	public String getAuthority() {
-		return authority;
+		return (String) userSessionMap.get("authority");
 	}
 
 	public void setAuthority(String authority) {
@@ -74,7 +78,7 @@ public class UserSession {
 	}
 
 	public String getMembershipTier() {
-		return membershipTier;
+		return (String) userSessionMap.get("membershipTier");
 	}
 
 	public void setMembershipTier(String membershipTier) {
@@ -82,7 +86,7 @@ public class UserSession {
 	}
 
 	public String getCurrentBusinessDate() {
-		return currentBusinessDate;
+		return (String) userSessionMap.get("currentBusinessDate");
 	}
 
 	public void setCurrentBusinessDate(String currentBusinessDate) {
@@ -90,7 +94,7 @@ public class UserSession {
 	}
 
 	public String getPreviousBusinessDay() {
-		return previousBusinessDay;
+		return (String) userSessionMap.get("previousBusinessDay");
 	}
 
 	public void setPreviousBusinessDay(String previousBusinessDay) {
@@ -98,11 +102,19 @@ public class UserSession {
 	}
 
 	public String getNextBusinessDay() {
-		return nextBusinessDay;
+		return (String) userSessionMap.get("nextBusinessDay");
 	}
 
 	public void setNextBusinessDay(String nextBusinessDay) {
 		this.nextBusinessDay = nextBusinessDay;
+	}
+
+	public String getSessId() {
+		return (String) userSessionMap.get("sessId");
+	}
+
+	public void setSessId(String sessId) {
+		this.sessId = sessId;
 	} 
     
     

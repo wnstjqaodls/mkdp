@@ -1,34 +1,43 @@
 package com.mkdp.session;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.mkdp.controller.LoginController;;
+import com.mkdp.controller.LoginController;
 
+@Component
 public class InMemorySessionManager implements SessionManager {
 
-	private static final String LOGIN_MEMBER = "loginMember";
-	
-	@Autowired
-	private UserSession userSession;
-	
-	@Override
-    public void createSession(HttpSession session, String userId) {
-        session.setAttribute(LOGIN_MEMBER, userId);
+    @Override
+    public void createAndStoreUserSession(HttpSession httpSession, UserSession userSession) {
+        // 여기서는 기존 세션에 UserSession을 저장하는 역할만 수행
+        if (httpSession != null) {
+            storeUserSession(httpSession, userSession);
+        }
+    }
+    
+    @Override
+    public void storeUserSession(HttpSession httpSession, UserSession userSession) {
+        if (httpSession != null) {
+            httpSession.setAttribute("userSession", userSession);
+        }
     }
 
-	@Override
-	public UserSession getSession(String sessionId) {
-		// TODO Auto-generated method stub
-		return (UserSession) userSession.getSessionInfoMap(sessionId);
-	}
-	
-	@Override
-    public void invalidateSession(HttpSession session) {
-        String userId = (String) session.getAttribute(LOGIN_MEMBER);
-        // 세션에 유저 ID가 있는지 확인
-        session.invalidate();
+    @Override
+    public UserSession getSession(HttpSession httpSession) {
+        UserSession userSession = (UserSession) httpSession.getAttribute("userSession");
+        if (userSession != null && userSession.getSessId().equals(httpSession.getId())) {
+            return userSession; // 올바른 세션 참조
+        }
+        return null; // 잘못된 세션 참조 또는 세션 없음
     }
-
+    
+    @Override
+    public void invalidateSession(HttpSession httpSession) {
+        if (httpSession != null && httpSession.getAttribute("userSession") != null) {
+            // 세션 무효화
+            httpSession.invalidate();
+        }
+    }
 }
