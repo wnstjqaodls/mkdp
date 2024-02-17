@@ -53,4 +53,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	</filter-mapping>
 	<!-- 한글 인코딩 End -->
 	
+    <session-config>
+        <session-timeout>30</session-timeout> <!-- 30분 후 세션 만료 -->
+    </session-config>
+	
 </web-app>
