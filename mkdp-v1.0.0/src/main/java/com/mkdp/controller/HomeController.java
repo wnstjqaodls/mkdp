@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mkdp.mapper.MemberMapper;
 import com.mkdp.service.MemberService;
+import com.mkdp.session.UserSession;
 import com.mkdp.vo.MemberVO;
 import com.mkdp.vo.ResultVO;
 import com.mysql.cj.Session;
@@ -133,8 +135,13 @@ public class HomeController {
 		// 결과 값을 담을 ResultVO를 선언한 생성자를 통해서 만드는데 기본값은 success는 false, result는 null로 세팅
 		ResultVO result = new ResultVO(false, null);
 
+		UserSession userInfo = new UserSession();
+		
+		ConcurrentHashMap<String, Object> UserInfoMap = new ConcurrentHashMap<String, Object>();
+	    UserInfoMap.put("emailId", userInfo.getUserId());
+
 		try {
-			result.setResult(service.getMemberInfo());
+			result.setResult(service.getMemberInfo(null));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			// TODO: handle exception
