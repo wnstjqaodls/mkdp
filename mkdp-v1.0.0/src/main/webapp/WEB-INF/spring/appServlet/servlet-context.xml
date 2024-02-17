@@ -30,6 +30,7 @@
 	<context:component-scan base-package="com.mkdp.service" />
 	<context:component-scan base-package="com.mkdp.mapper" />
 	<context:component-scan base-package="com.mkdp.vo" /> 
+	<context:component-scan base-package="com.mkdp.session" /> 
 	
 	
 </beans:beans>
