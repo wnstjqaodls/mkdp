@@ -3,9 +3,12 @@ package com.mkdp.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.mkdp.mapper.MemberMapper;
 import com.mkdp.service.MemberService;
 import com.mkdp.session.SessionManager;
+import com.mkdp.session.UserSession;
 import com.mkdp.vo.MemberVO;
 
 @CrossOrigin("*")
@@ -44,56 +48,100 @@ public class LoginController {
 	private SessionManager sessionManager;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)//
-	public String login(HttpServletRequest request, HttpServletResponse response, @RequestBody HashMap<String, Object> credentials) throws UnsupportedEncodingException , Exception {
-		boolean isLoginValid = false;
+	public ConcurrentHashMap<String, Object> login(HttpServletRequest request, HttpServletResponse response, @RequestBody HashMap<String, Object> credentials) throws UnsupportedEncodingException , Exception {
+		
 	    String email = (String) credentials.get("email");
 	    String password = credentials.get("password").toString();
-	    List<MemberVO> memberList = new ArrayList<MemberVO>();
+	    logger.debug("이메일 아이디는  	   : "+email);
+	    logger.debug("비밀번호는  			   : "+password);
+	    
+	    //List<MemberVO> memberList = new ArrayList<MemberVO>();
 		
 		String decodedPasswd = URLDecoder.decode(password, "UTF-8");
 		String encryptPassword = this.encryptPassword(decodedPasswd); //암호화 된 비밀번호
 	   
-	    logger.debug("로그인 요청 프로토콜 : "+request.getProtocol());
-	    logger.debug("이메일 아이디는  	   : "+email);
-	    logger.debug("비밀번호는  			   : "+password);
+		ConcurrentHashMap<String, Object> UserInfoMap = new ConcurrentHashMap<String, Object>();
+	    UserInfoMap.put("emailId", email);
 	    
-		/* 세션 아이디, 세션 유저 아이디 */
-		/*
-		 * String sessionId = String.valueOf(param.get("sessionSysSessId")); String
-		 * sessionUserId = String.valueOf(param.get("sessionSysUserId")); String
-		 * sessionIpAddr = String.valueOf(param.get("sessionSysIpAddr"));
-		 * 
-		 * String remoteSessionId = CoreVoUtil.toString(param.get("remoteSessionId"));
-		 */
-		
-		// TODO : 쿼리로직 추가되어야함 (email, 및 user id 를 가지고 DB에 조회하는쿼리
-	    SqlSession session = ssf.openSession();
-	    MemberMapper mapper = session.getMapper(MemberMapper.class);
-	    
-	    memberList = mapper.getMemberInfo();
+	    ArrayList<MemberVO> memberResult = (ArrayList<MemberVO>) service.getMemberInfo(UserInfoMap);
+	    logger.debug("멤버정보는  	   : "+memberResult.toString());
+	    String memId = (String) memberResult.get(0).getMem_id();
+	    String memName = (String) memberResult.get(0).getMem_name();
+	    String memPassword = (String) memberResult.get(0).getMem_password();
 
-	    MemberVO memberResult = memberList.get(0);
-	    String memName = (String) memberResult.getMem_name();
-	    // TODO : getKiwoom_password 이 아닌 user 의 password 멤버변수를 가져와야함. 없으면 필드생성후 게터세터 생성해야함
-	    String memPassword = (String) memberResult.getMem_password();
-	    String loginViewName;
+	    
+	    // TODO : 세션정보가져와서 기존 세션이랑 현재 세션이랑 같은지 검증로직
+	    
+	    // 사용자 로그인 처리 부분
+	    //request.getSession(false)는 현재 요청과 연결된 세션이 있으면 해당 세션을 반환하고, 없으면 null을 반환합니다.
+	    HttpSession httpSession = request.getSession(false);
+	    UserSession userSession;
+
+	    if (httpSession != null && httpSession.getAttribute("userSession") != null) {
+	        // 기존 세션 사용
+	    	userSession = sessionManager.getSession(httpSession);
+	        //userSession = (UserSession) httpSession.getAttribute("userSession");
+	    } else {
+		    // 새로운 세션 생성 및 UserSession 객체 저장
+		    // SessionManager.createAndStoreUserSession 메서드는 이 null 체크를 하고, 세션이 없는 경우 새로운 세션을 생성한 후 UserSession 객체를 저장합니다.
+	        httpSession = request.getSession(true);
+	        httpSession.setMaxInactiveInterval(30 * 60); // 예: 30분 후 세션 만료
+	        
+	        userSession = new UserSession();
+	        userSession.setSessId(httpSession.getId()); // 세션 ID 설정
+	        sessionManager.createAndStoreUserSession(httpSession, userSession);
+	    }
+
+	    // 사용자 정보 설정
+	    userSession.setUserId(email);
+	    // 기타 필요한 정보 설정...
+	    
+	    userSession.setLoginCheck(true); // 로그인 상태로 설정
 	    
 	    boolean isAuthenticatePassword = authenticatePassword(encryptPassword, memPassword);
 	    
-	    if ( isAuthenticatePassword ) {
-	    	isLoginValid = true;
-	    	String previousSessionId = request.getSession().toString();
-			request.setAttribute("result", "성공");
-			logger.info("로그인 성공  			   : ");
-			// 성공후 세션있으면 세션반환 없으면 신규세션 생성
-			sessionManager.createSession(request.getSession(), memName);
-			HttpSession currentSessionId = (HttpSession) sessionManager.getSession(previousSessionId);
-			
+	    if ( isAuthenticatePassword == false ) {
+	    	throw new Exception("아이디 또는 비밀번호가 일치하지않습니다");
 	    }
-	    	
-		loginViewName = "redirect:/";
-		
-		return loginViewName;
+	    
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        String formattedDate = formatter.format(today);
+        
+
+        // TODO : ip 주소 세팅하는 클래스 구현후, 인터셉터 클래스로 옮겨야함
+		String ip = request.getHeader("X-FORWARDED-FOR");
+		if (ip == null || ip.length() == 0 || "unknown".equals(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equals(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equals(ip)) {
+			ip = request.getRemoteAddr();
+		}
+        
+
+	    userSession.setSessionInfoMap("sessId",request.getSession().toString());
+	    userSession.setSessionInfoMap("userId",email);
+	    userSession.setSessionInfoMap("ipAddress", ip);
+	    // TODO : mac 주소 계산 클래스 구현필요
+	    //userSession.setSessionInfoMap("macAddr",currentSessionId);
+	    userSession.setSessionInfoMap("authority","01");
+	    userSession.setSessionInfoMap("membershipTier","01");
+	    
+	    userSession.setSessionInfoMap("currentBusinessDate",formattedDate);
+	    // TODO : 영업일 계산 class 구현필요
+	    //userSession.setSessionInfoMap("previousBusinessDay",currentSessionId);
+	    //userSession.setSessionInfoMap("nextBusinessDay",currentSessionId);
+	    
+	    userSession.setLoginCheck(true);
+	    
+	    sessionManager.storeUserSession(httpSession, userSession);
+	    UserInfoMap.put("sucess", true);
+	    UserInfoMap.put("result", userSession);
+	    
+		return UserInfoMap;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)//
