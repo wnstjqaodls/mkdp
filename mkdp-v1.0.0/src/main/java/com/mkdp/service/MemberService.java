@@ -2,6 +2,7 @@ package com.mkdp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -18,15 +19,14 @@ public class MemberService implements MemberServiceIF{
 	private SqlSessionFactory ssf;
 	
 	@Override
-	public List<MemberVO> getMemberInfo() {
+	public List<MemberVO> getMemberInfo(ConcurrentHashMap<String, Object> userInfoMap) {
 		List<MemberVO> memberList = new ArrayList<MemberVO>();
 		
 		try (SqlSession session = ssf.openSession()) {
 			MemberMapper mapper = session.getMapper(MemberMapper.class);
 
-			memberList = mapper.getMemberInfo();
+			memberList = mapper.getMemberInfo(userInfoMap);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		
