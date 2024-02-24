@@ -69,14 +69,20 @@ public class LoginController {
 	    String memName = (String) memberResult.get(0).getMem_name();
 	    String memPassword = (String) memberResult.get(0).getMem_password();
 
+	    boolean isAuthenticatePassword = authenticatePassword(encryptPassword, memPassword);
 	    
-	    // TODO : 세션정보가져와서 기존 세션이랑 현재 세션이랑 같은지 검증로직
+	    if ( isAuthenticatePassword == false ) {
+	    	throw new Exception("아이디 또는 비밀번호가 일치하지않습니다");
+	    	// TODO : 검증 실패시 로그인 fail 메세지 클라이언트에 전달해야함
+	    }
+	    
+	    
 	    
 	    // 사용자 로그인 처리 부분
 	    //request.getSession(false)는 현재 요청과 연결된 세션이 있으면 해당 세션을 반환하고, 없으면 null을 반환합니다.
 	    HttpSession httpSession = request.getSession(false);
 	    UserSession userSession;
-
+	    
 	    if (httpSession != null && httpSession.getAttribute("userSession") != null) {
 	        // 기존 세션 사용
 	    	userSession = sessionManager.getSession(httpSession);
@@ -94,20 +100,8 @@ public class LoginController {
 
 	    // 사용자 정보 설정
 	    userSession.setUserId(email);
-	    // 기타 필요한 정보 설정...
-	    
 	    userSession.setLoginCheck(true); // 로그인 상태로 설정
-	    
-	    boolean isAuthenticatePassword = authenticatePassword(encryptPassword, memPassword);
-	    
-	    if ( isAuthenticatePassword == false ) {
-	    	throw new Exception("아이디 또는 비밀번호가 일치하지않습니다");
-	    }
-	    
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = new Date();
-        String formattedDate = formatter.format(today);
-        
+	    // TODO : 기타 필요한 정보 설정...
 
         // TODO : ip 주소 세팅하는 클래스 구현후, 인터셉터 클래스로 옮겨야함
 		String ip = request.getHeader("X-FORWARDED-FOR");
@@ -130,12 +124,13 @@ public class LoginController {
 	    userSession.setSessionInfoMap("authority","01");
 	    userSession.setSessionInfoMap("membershipTier","01");
 	    
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+        String formattedDate = formatter.format(today);
 	    userSession.setSessionInfoMap("currentBusinessDate",formattedDate);
 	    // TODO : 영업일 계산 class 구현필요
 	    //userSession.setSessionInfoMap("previousBusinessDay",currentSessionId);
 	    //userSession.setSessionInfoMap("nextBusinessDay",currentSessionId);
-	    
-	    userSession.setLoginCheck(true);
 	    
 	    sessionManager.storeUserSession(httpSession, userSession);
 	    UserInfoMap.put("sucess", true);
