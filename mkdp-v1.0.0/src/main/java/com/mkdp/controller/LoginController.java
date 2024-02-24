@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.mkdp.mapper.MemberMapper;
 import com.mkdp.service.MemberService;
@@ -33,7 +34,7 @@ import com.mkdp.session.UserSession;
 import com.mkdp.vo.MemberVO;
 
 @CrossOrigin("*")
-@Controller
+@RestController
 public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
