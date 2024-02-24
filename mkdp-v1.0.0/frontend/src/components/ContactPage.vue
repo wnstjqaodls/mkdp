@@ -47,6 +47,7 @@
 
 <script>
 import { MKDP_HTTP } from '../http/axiosUtil';
+import sessionManager from '../store/sessionManager'
 
 export default {
   data() {
@@ -65,8 +66,13 @@ export default {
 
       MKDP_HTTP.MKDP_Request('login',requestData)
           .then(response => {
-            console.log('Login successful:', response);
-            // 로그인 후 처리 로직
+
+          // 로그인 성공 시 세션에 데이터 저장
+          sessionManager.saveSessionData(response.data);
+          // 로그인 성공후 메인화면 루트 경로('/')로 라우팅
+          console.log("성공!!!"+sessionManager.getSessionData())
+          this.$router.push('/');
+
           })
           .catch(error => {
             console.error('Login failed:', error);
