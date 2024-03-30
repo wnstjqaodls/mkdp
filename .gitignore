@@ -14,10 +14,13 @@ local.properties
 .loadpath
 .recommenders
 .classpath
+/mkdp-v1.0.0/target/
+/mkdp-v1.0.0/.vscode/
 */target/*
 .project
 .settings
 .idea/
+*/.vscode/*
 mkdp.iml
 
 # External tool builders
@@ -76,6 +79,7 @@ mkdp.iml
 ### Java ###
 # Compiled class file
 *.class
+classes/
 
 # Log file
 *.log
@@ -126,3 +130,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
+
