@@ -17,6 +17,8 @@ local.properties
 */target/*
 .project
 .settings
+.idea/
+mkdp.iml
 
 # External tool builders
 .externalToolBuilders/
