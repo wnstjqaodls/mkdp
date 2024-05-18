@@ -130,4 +130,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,eclipse
+<<<<<<< Updated upstream
 
+=======
+.idea/
+>>>>>>> Stashed changes
