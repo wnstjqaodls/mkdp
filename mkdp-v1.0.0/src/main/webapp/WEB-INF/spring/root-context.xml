@@ -16,11 +16,11 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+
 	<context:property-placeholder location="classpath:/env/system.properties" />
-	
+
 	<!-- mysql JDBC DataSource -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 	lazy-init="false">
@@ -29,11 +29,11 @@
 		<property name="username" value="root" />
 		<property name="password" value="mkdp" />
 	</bean>
-    
+
 	<!-- mybatis SqlSessionFactoryBean -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- <property name="configLocation" value="classpath:/mybatis-config.xml" /> -->
-        <property name="mapperLocations" value="classpath*:com/mkdp/**/mapper/*Mapper.xml" />
-	</bean>	
+		<property name="mapperLocations" value="classpath*:com/mkdp/mapper/*Mapper.xml" />
+	</bean>
 </beans>
