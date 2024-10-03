@@ -31,6 +31,10 @@ const router = new VueRouter({
           component: () => import("./components/companyOverview.vue"),
         },
         {
+          path: "companyCropCode",
+          component: () => import("./components/companyCropCode.vue"),
+        },
+        {
           path: "footer",
           component: () => import("./components/mainFooter.vue"),
         },

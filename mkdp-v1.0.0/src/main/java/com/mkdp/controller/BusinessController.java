@@ -58,6 +58,7 @@ public class BusinessController {
 		
 		return result;
 
+<<<<<<< Updated upstream
 	}
 
 
@@ -83,13 +84,48 @@ public class BusinessController {
 		try {
 			HttpEntity entity = (HttpEntity) apiResponse.getEntity();
 			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+=======
+	}	
+	
+	/** http 요청을 받아서 API Dart 고유번호 을 Map데이터로 돌려준다  */
+	@ResponseBody
+	@RequestMapping(value = "/companyCropCode", method = RequestMethod.GET)
+	public Map<Object,Object> companyCropCodeController(HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException {	
+		
+		Map<Object, Object> result = new HashMap<>();
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		
+		String url = "https://opendart.fss.or.kr/api/corpCode.xml";
+		String crtfc_key = "7d0f1dcd2423d0a924566799752d81b114b9debe";
+		
+		URIBuilder builder = new URIBuilder(url);
+		builder.setParameter("crtfc_key", crtfc_key);
+
+		
+		// 프록시 서버를 통해 요청을 보냄
+		HttpGet request1 = new HttpGet(builder.build());
+		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+		CloseableHttpResponse apiResponse = httpClient.execute(request1);
+		
+		try {
+			HttpEntity entity = (HttpEntity) apiResponse.getEntity();
+			String responseBody = EntityUtils.toString((org.apache.http.HttpEntity) entity, StandardCharsets.UTF_8);
+>>>>>>> Stashed changes
 			result.put("result", responseBody);
 		} finally {
 			apiResponse.close();
 		}
+<<<<<<< Updated upstream
 
 
 		return result;
 
 	}
+=======
+		
+		
+		return result;
+		
+	}	
+>>>>>>> Stashed changes
 }
