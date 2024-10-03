@@ -1,6 +1,7 @@
 package com.mkdp.controller;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -58,34 +59,8 @@ public class BusinessController {
 		
 		return result;
 
-<<<<<<< Updated upstream
+
 	}
-
-
-	/** http 요청을 받아서 API Dart 기업개황 을 Map데이터로 돌려준다  */
-	@ResponseBody
-	@RequestMapping(value = "/corpCode", method = RequestMethod.GET)
-	public Map<Object,Object> getCorpCode(HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException {
-
-		Map<Object, Object> result = new HashMap<>();
-		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-
-		String url = BASE_URL;
-		String crtfc_key = CERTIFICATION_KEY;
-
-		URIBuilder builder = new URIBuilder(url);
-		builder.setParameter("crtfc_key", crtfc_key);
-
-		// 프록시 서버를 통해 요청을 보냄
-		HttpGet request1 = new HttpGet(builder.build());
-		request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
-		CloseableHttpResponse apiResponse = httpClient.execute(request1);
-
-		try {
-			HttpEntity entity = (HttpEntity) apiResponse.getEntity();
-			String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-=======
-	}	
 	
 	/** http 요청을 받아서 API Dart 고유번호 을 Map데이터로 돌려준다  */
 	@ResponseBody
@@ -110,22 +85,15 @@ public class BusinessController {
 		try {
 			HttpEntity entity = (HttpEntity) apiResponse.getEntity();
 			String responseBody = EntityUtils.toString((org.apache.http.HttpEntity) entity, StandardCharsets.UTF_8);
->>>>>>> Stashed changes
+
 			result.put("result", responseBody);
 		} finally {
 			apiResponse.close();
 		}
-<<<<<<< Updated upstream
 
 
 		return result;
 
 	}
-=======
 		
-		
-		return result;
-		
-	}	
->>>>>>> Stashed changes
-}
+	}
