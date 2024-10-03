@@ -158,6 +158,7 @@ You can also use the portfolio backtesting tool to build and compare portfolios 
       <!-- 본문 -->
       <div class="col-md-7 col-lg-12">
         <h4 class="mb-3">Portfolio Model Configuration</h4>
+          <crop-code-btn></crop-code-btn>
         <form class="needs-validation" novalidate>
           <div class="row g-3">
             <div class="col-sm-6">
@@ -264,9 +265,11 @@ You can also use the portfolio backtesting tool to build and compare portfolios 
 
 <script>
 import axios from 'axios';
+import CropCodeBtn from "@/common/CropCodeBtn.vue";
  
 export default {
   name: 'MemberInfo',
+  components: {CropCodeBtn},
   data() {
     return {
       memberList: [],

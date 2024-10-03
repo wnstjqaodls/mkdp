@@ -5,8 +5,8 @@
 </template>
  
 <script>
-//import axios from 'axios';
- 
+import axios from "axios";
+
 export default {
   name: 'companyOverview',
   data() {
@@ -14,7 +14,7 @@ export default {
       someData: 1
     };
   },
-/*   props: {
+   props: {
 
   },
   created() {
@@ -34,7 +34,7 @@ export default {
           console.log(error);
         });
     },
-  }, */
+  },
 };
 </script>
  
