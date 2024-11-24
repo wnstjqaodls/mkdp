@@ -3,11 +3,8 @@ package com.mkdp.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +13,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,17 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mkdp.mapper.MemberMapper;
 import com.mkdp.service.MemberService;
 import com.mkdp.session.UserSession;
-import com.mkdp.vo.MemberVO;
 import com.mkdp.vo.ResultVO;
-import com.mysql.cj.Session;
 
 /**
  * Handles requests for the application home page.

@@ -5,7 +5,9 @@ import { MKDP_HTTP } from '../http/axiosUtil'; // Axios 모듈의 경로를 확�
 const companyOverviewData = ref(null);
 
 function getCorpCode() {
-  MKDP_HTTP.MKDP_Request('/companyCropCode', {}) // 두 번째 인자로 필요한 파라미터를 전달
+  MKDP_HTTP.MKDP_Request('/api/updateCorpCodes', {
+    method : 'POST'
+  }) // 두 번째 인자로 필요한 파라미터를 전달
       .then(data => {
         companyOverviewData.value = data;
       })
