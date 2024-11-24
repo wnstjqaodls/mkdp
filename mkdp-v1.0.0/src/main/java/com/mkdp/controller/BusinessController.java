@@ -8,6 +8,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mkdp.service.DisclosureService;
+import com.mkdp.service.DisclosureServiceIF;
 import com.mkdp.vo.BacktestRequestVO;
 import com.mkdp.vo.BacktestResultVO;
 
@@ -77,7 +80,7 @@ public class BusinessController {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		
 		String url = CROP_CODE_API_URL;
-		String crtfc_key = "7d0f1dcd2423d0a924566799752d81b114b9debe";
+		String crtfc_key = CERTIFICATION_KEY;
 		
 		URIBuilder builder = new URIBuilder(url);
 		builder.setParameter("crtfc_key", crtfc_key);
@@ -109,14 +112,28 @@ public class BusinessController {
         
         try {
             // 1. ZIP 파일 다운로드
-            byte[] zipFile = downloadCorpCodeFile();
-            
+				// byte[] zipFile = downloadCorpCodeFile();
+			String url = CROP_CODE_API_URL;
+			String crtfc_key = CERTIFICATION_KEY;
+			
+			URIBuilder builder = new URIBuilder(url);
+			builder.setParameter("crtfc_key", crtfc_key);
+			CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+			
+			// 프록시 서버를 통해 요청을 보냄
+			HttpGet request1 = new HttpGet(builder.build());
+			request1.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
+			CloseableHttpResponse apiResponse = httpClient.execute(request1);
+
+			
+            byte[] zipFile = String.valueOf(apiResponse.getEntity().getContent()).getBytes();
             // 2. ZIP 파일 압축해제 및 XML 파싱
-            List<CompanyVO> companies = parseCorpCodeXml(zipFile);
+			DisclosureServiceIF disclosureService = new DisclosureService();
+            List<String> companies = disclosureService.parseCorpCodeXml(zipFile);
             
-            // 3. DB 저장
-            companyService.updateCompanies(companies);
-            
+			// 3. 기업 코드 업데이트
+            disclosureService.updateCompanies(companies);
+			//TODO : 이부분 테스트해보기 디버깅해서 데이터보기
             result.put("success", true);
             result.put("message", "기업 코드 업데이트 완료");
             
